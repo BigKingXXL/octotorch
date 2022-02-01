@@ -1,9 +1,15 @@
+from typing import Any, Dict
 import torch
 from . import Quantization
 
 class LinearQuantization(Quantization):
     def __init__(self, full_scale_range: int = 7):
         self.full_scale_range = full_scale_range
+    
+    def get_setting_dict(self) -> Dict[str, Any]:
+        return {
+            "full_scale_range": self.full_scale_range
+        }
 
     def quantize(self, tensor: torch.Tensor, bits: int) -> torch.Tensor:
         """Implements the Linear Quantization proposed in
