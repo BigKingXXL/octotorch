@@ -61,6 +61,7 @@ class OctoTorch:
             self.score_func: Callable[[nn.Module], Union[int, float, np.number]] = lambda model: model.score()
 
     def quantize(self):
+        device = next(self._model.parameters()).device
         self._model.eval()
         self.logger.info("starting quantization")
         model_weigths = copy_state_dict(self._model.state_dict())
@@ -88,6 +89,7 @@ class OctoTorch:
                     state_dict = copy_state_dict(model_weigths)
                     state_dict[key] = quantized
                     self._model.load_state_dict(state_dict)
+                    self._model.to(device)
                     score = self.score_func(self._model)
                     if "single" not in results:
                         results["single"] = {}
@@ -124,6 +126,7 @@ class OctoTorch:
             quantized = method.quantize(quantized_state_dict[key], bit_width)
             quantized_state_dict[key] = quantized
             self._model.load_state_dict(quantized_state_dict)
+            self._model.to(device)
             score = self.score_func(self._model)
             if score <= self.thresh * initial_score:
                 break
