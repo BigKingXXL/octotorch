@@ -6,8 +6,8 @@ from octotorch import OctoTorch
 from tqdm import tqdm
 
 mnist_data = torchvision.datasets.MNIST('./MNIST', download=True, transform=torchvision.transforms.ToTensor())
-data_loader = torch.utils.data.DataLoader([mnist_data[x] for x in range(10000)],
-                                          batch_size=1000,
+data_loader = torch.utils.data.DataLoader([mnist_data[x] for x in range(1000)],
+                                          batch_size=100,
                                           shuffle=True)
 
 def train_once(model: torch.nn.Module):
@@ -37,8 +37,8 @@ else:
     train_once(model)
     torch.save(model.state_dict(), './MNIST/pretrained.pth')
 
-data_loader = torch.utils.data.DataLoader([mnist_data[x] for x in range(1000)],
-                                          batch_size=100,
+data_loader = torch.utils.data.DataLoader([mnist_data[x] for x in range(100)],
+                                          batch_size=20,
                                           shuffle=True)
 
 print("score without everything: ", score(model))

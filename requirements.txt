@@ -1,3 +1,4 @@
 torch
 numpy
 git+https://github.com/max-3l/fvcore.git
+git+https://github.com/BigKingXXL/PWLQ.git
