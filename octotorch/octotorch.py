@@ -84,7 +84,11 @@ class OctoTorch:
                     if self.allow_layers is not None:
                         if not any(map(lambda x: x in key, self.allow_layers)):
                             continue
-                    quantized = method.quantize(weight.clone(), bit_width)
+                    try:
+                        quantized = method.quantize(weight.clone(), bit_width)
+                    except:
+                        self.logger.warning(f"Failed quantizing at: {key}")
+                        continue
                     error = abs(weight - quantized).sum().item()
                     state_dict = copy_state_dict(model_weigths)
                     state_dict[key] = quantized
